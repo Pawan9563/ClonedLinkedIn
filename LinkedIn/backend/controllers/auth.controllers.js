@@ -25,7 +25,7 @@ export const signUp = async (req,res)=>{
             password : hashedPass
         })
         let token = await genToken(user._id)
-        res.cookie("Token",token,{
+        res.cookie("token",token,{
             httpOnly:true,
             maxAge : 7*24*60*60*1000,
             sameSite:"strict",
@@ -50,13 +50,13 @@ export const login = async (req,res)=>{
             return res.status(400).json({message:"Incorrect password"})
         }
         let token = await genToken(user._id)
-        res.cookie("Token",token,{
+        res.cookie("token",token,{
             httpOnly:true,
             maxAge : 7*24*60*60*1000,
             sameSite:"strict",
             secure: process.env.NODE_ENVIRONMENT == "production"
         })
-        return res.status(201).json({message : "User Login Successfully",user:user})
+        return res.status(200).json({message : "User Login Successfully",user:user})
     }
     catch(error){
         return res.status(500).json({message:error.message})
@@ -67,7 +67,7 @@ export const login = async (req,res)=>{
 export const logOut = async (req,res) =>{
     try{
         res.clearCookie("token")
-        return res.status(400).json({message:"Logout Successful"})
+        return res.status(201).json({message:"Logout Successful"})
     }
     catch(error){
         return res.status(500).json({message:error.message})
